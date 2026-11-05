@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fortuna em Dubai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
+  <script type="module" crossorigin src="./assets/index-B9n1n_Ex.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DR0h6TiP.css">
+</head>
+<body>
+  <div id="stage">
+    <canvas id="game" width="640" height="360"></canvas>
+    <canvas id="cine" class="hidden" width="1280" height="720"></canvas>
+    <div id="fade"></div>
+
+    <!-- HUD -->
+    <div id="hud" class="hidden">
+      <div class="pill" id="hud-hearts"></div>
+      <div class="pill"><canvas id="ico-coin" width="16" height="16"></canvas><b id="hud-coins">0</b></div>
+      <div class="pill"><canvas id="ico-env" width="16" height="20"></canvas><b id="hud-env">0/5</b></div>
+      <div class="pill" id="hud-meter-pill">CARTA <div id="hud-meter"><i></i></div><small>Q</small></div>
+      <div class="pill debt hidden" id="hud-debt"></div>
+      <div class="pill lost hidden" id="hud-lost"></div>
+    </div>
+    <div id="toast"></div>
+
+    <!-- DIÁLOGO (estilo Dave the Diver) -->
+    <div id="dlg" class="hidden">
+      <div class="portrait" id="dlg-left"><canvas></canvas><div class="plate"></div></div>
+      <div id="dlg-box">
+        <div id="dlg-text"></div>
+        <div id="dlg-key">Espaço</div>
+        <div id="dlg-next">▼</div>
+      </div>
+      <div class="portrait" id="dlg-right"><canvas></canvas><div class="plate"></div></div>
+    </div>
+
+    <div id="casino" class="hidden">
+      <canvas id="casino-cv" width="640" height="360"></canvas>
+      <div id="casino-bar">
+        <div class="bet"><button id="cz-minus">−</button><b id="cz-bet">10</b><button id="cz-plus">+</button><button id="cz-all">TUDO</button></div>
+        <div id="cz-actions"></div>
+        <button id="cz-exit">Sair</button>
+      </div>
+    </div>
+
+    <!-- LOJA (fim da fase) -->
+    <div id="shop" class="hidden">
+      <div id="shop-left">
+        <h2>Boutique<br />Burj Fortuna</h2>
+        <div id="shop-stage"><canvas id="shop-preview"></canvas><div id="shop-trail" class="hidden"></div></div>
+        <div class="pill"><canvas id="ico-coin2" width="16" height="16"></canvas><b id="shop-coins">0</b></div>
+        <p class="help">Passe o mouse para provar · Esc sai</p>
+        <button id="shop-exit" class="plain">Sair da loja</button>
+      </div>
+      <div id="shop-grid"></div>
+    </div>
+
+    <button id="cs-skip" class="hidden">Pular ▸▸ <small>Esc</small></button>
+
+    <!-- MENU -->
+    <div id="menu" class="screen">
+      <button id="btn-play" class="gold">JOGAR</button>
+      <button id="btn-continue" class="plain hidden">Continuar</button>
+      <!-- atalho de desenvolvimento: começar direto em qualquer fase -->
+      <div id="dev-levels"><span>Ir para a fase:</span></div>
+    </div>
+
+    <!-- PAUSA -->
+    <div id="pause" class="screen dim hidden">
+      <div class="card">
+        <h2>Pausado</h2>
+        <button id="btn-resume" class="gold">Continuar</button>
+        <button id="btn-controls" class="plain">Controles</button>
+        <button id="btn-menu" class="plain">Menu</button>
+      </div>
+    </div>
+
+    <!-- CONTROLES (aberto pela pausa) -->
+    <div id="controls" class="screen dim hidden">
+      <div class="card wide">
+        <h2>Controles</h2>
+        <div class="ctl-grid">
+          <section>
+            <h3>Movimento</h3>
+            <div class="ctl"><span><kbd>←</kbd><kbd>→</kbd> ou <kbd>A</kbd><kbd>D</kbd></span><em>Andar</em></div>
+            <div class="ctl"><span><kbd>Espaço</kbd> <kbd>W</kbd> <kbd>↑</kbd></span><em>Pular (segure para ir mais alto)</em></div>
+            <div class="ctl"><span>Pular no ar</span><em>Pulo duplo (vira bola)</em></div>
+            <div class="ctl"><span><kbd>↓</kbd> ou <kbd>S</kbd></span><em>Agachar e bloquear tiros</em></div>
+            <div class="ctl"><span><kbd>Shift</kbd> ou <kbd>K</kbd></span><em>Dash (atravessa e derruba)</em></div>
+          </section>
+          <section>
+            <h3>Ataque</h3>
+            <div class="ctl"><span><kbd>J</kbd> <kbd>X</kbd> ou clique</span><em>Jogar carta</em></div>
+            <div class="ctl"><span><kbd>Q</kbd> ou <kbd>C</kbd></span><em>Carta Premiada (barra cheia)</em></div>
+            <div class="ctl"><span>Pular em cima</span><em>Pisão</em></div>
+            <div class="ctl"><span>4 abates seguidos</span><em>Febre: 3 cartas e mais velocidade</em></div>
+          </section>
+          <section>
+            <h3>Interagir</h3>
+            <div class="ctl"><span><kbd>E</kbd> ou <kbd>Enter</kbd></span><em>Falar, apostar, comprar</em></div>
+            <div class="ctl"><span><kbd>Espaço</kbd></span><em>Avançar diálogo / girar no cassino</em></div>
+          </section>
+          <section>
+            <h3>Sistema</h3>
+            <div class="ctl"><span><kbd>Esc</kbd> ou <kbd>P</kbd></span><em>Pausar / voltar</em></div>
+            <div class="ctl"><span><kbd>M</kbd></span><em>Música liga/desliga</em></div>
+            <div class="ctl"><span><kbd>Tab</kbd></span><em>Pular o tutorial</em></div>
+          </section>
+        </div>
+        <button id="btn-controls-back" class="plain">Voltar</button>
+      </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div id="results" class="screen dim hidden">
+      <div class="card">
+        <h2 id="res-title">Fim</h2>
+        <div id="res-stats"></div>
+        <button id="btn-again" class="gold">Jogar de novo</button>
+        <button id="btn-res-menu" class="plain">Menu</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
